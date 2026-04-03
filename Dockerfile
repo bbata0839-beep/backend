@@ -8,9 +8,8 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci --omit=dev
 
-# Copy Prisma schema and related files
+# Copy Prisma schema
 COPY prisma ./prisma
-COPY prisma.config.ts ./
 
 # Generate Prisma client
 RUN npx prisma generate
