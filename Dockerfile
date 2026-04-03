@@ -10,7 +10,6 @@ RUN npm ci --omit=dev
 
 # Copy Prisma schema
 COPY prisma ./prisma
-COPY prisma.config.js ./
 
 # Generate Prisma client with a dummy connection string
 RUN DATABASE_URL="mysql://root:root@localhost:3306/dummy" npx prisma generate 2>&1 || true
