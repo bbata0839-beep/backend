@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+.env
+.env.local
+.git
+.gitignore
+dist
+build
+.next
+.venv
+__pycache__
+.DS_Store
+tmp/
+uploads/
