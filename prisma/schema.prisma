@@ -30,7 +30,6 @@ model User {
 
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  @@index([tenantId])
   @@map("users")
 }
 
@@ -43,7 +42,6 @@ model Company {
 
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  @@index([tenantId])
   @@map("companies")
 }
 
@@ -56,7 +54,6 @@ model Contact {
 
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  @@index([tenantId])
   @@map("contacts")
 }
 
@@ -70,7 +67,6 @@ model Deal {
 
   tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
 
-  @@index([tenantId, stage])
   @@map("deals")
 }
 
