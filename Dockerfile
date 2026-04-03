@@ -8,16 +8,17 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci --omit=dev
 
-# Copy Prisma schema
+# Copy Prisma schema and config
 COPY prisma ./prisma
+COPY prisma.config.js ./
 
-# Generate Prisma client
-RUN npx prisma generate
+# Generate Prisma client (with dummy DATABASE_URL for build only)
+RUN DATABASE_URL="mysql://user:password@localhost:3306/dummy" npx prisma generate
 
 # Copy application source
 COPY src ./src
 
-# Expose port (adjust if needed)
+# Expose port
 EXPOSE 3000
 
 # Build DATABASE_URL from Railway MySQL variables if they exist, otherwise use DATABASE_URL
