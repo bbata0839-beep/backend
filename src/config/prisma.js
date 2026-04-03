@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 
 export const prisma = new PrismaClient({
-  log: ["error"],
+  errorFormat: process.env.NODE_ENV === "production" ? "minimal" : "pretty",
 });
