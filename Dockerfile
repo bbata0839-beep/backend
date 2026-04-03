@@ -10,16 +10,26 @@ RUN npm ci --omit=dev
 
 # Copy Prisma schema and related files
 COPY prisma ./prisma
+COPY prisma.config.ts ./
 
 # Generate Prisma client
 RUN npx prisma generate
 
 # Copy application source
 COPY src ./src
-COPY prisma.config.js ./
 
 # Expose port (adjust if needed)
 EXPOSE 3000
 
+# Build DATABASE_URL from Railway MySQL variables if they exist, otherwise use DATABASE_URL
+RUN echo '#!/bin/sh\n\
+if [ -z "$DATABASE_URL" ]; then\n\
+  if [ -n "$MYSQLHOST" ] && [ -n "$MYSQLUSER" ] && [ -n "$MYSQLPASSWORD" ] && [ -n "$MYSQLDATABASE" ]; then\n\
+    PORT=${MYSQLPORT:-3306}\n\
+    export DATABASE_URL="mysql://${MYSQLUSER}:${MYSQLPASSWORD}@${MYSQLHOST}:${PORT}/${MYSQLDATABASE}"\n\
+  fi\n\
+fi\n\
+exec node src/server.js' > /app/entrypoint.sh && chmod +x /app/entrypoint.sh
+
 # Start application
-CMD ["node", "src/server.js"]
+CMD ["/app/entrypoint.sh"]
